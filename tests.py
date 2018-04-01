@@ -16,9 +16,19 @@ class FormatPriceTestCase(unittest.TestCase):
         pretty_price = format_price('13523')
         self.assertEqual(pretty_price, '13 523')
 
-    def test_work_with_not_int_or_float(self):
-        pretty_price = format_price('letters string')
-        self.assertIsNone(pretty_price)
+    def test_work_with_not_number(self):
+        pretty_price_letters = format_price('letters string')
+        pretty_price_list = format_price([1300.5, '4000'])
+        pretty_price_dict = format_price({'price': 80700})
+        pretty_price_tuple = format_price((1300.5, '4000'))
+        pretty_price_bool = format_price(False)
+        pretty_price_set = format_price({1300.5, '4000'})
+        self.assertIsNone(pretty_price_letters)
+        self.assertIsNone(pretty_price_bool)
+        self.assertIsNone(pretty_price_dict)
+        self.assertIsNone(pretty_price_list)
+        self.assertIsNone(pretty_price_set)
+        self.assertIsNone(pretty_price_tuple)
 
     def test_work_with_float(self):
         pretty_price = format_price(10120.550)
@@ -30,7 +40,7 @@ class FormatPriceTestCase(unittest.TestCase):
 
     def test_work_with_coma_in_number(self):
         pretty_price = format_price('1235,56')
-        self.assertEqual(pretty_price, '1 235.56')
+        self.assertIsNone(pretty_price)
 
 
 if __name__ == '__main__':

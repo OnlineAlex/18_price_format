@@ -1,47 +1,34 @@
 import argparse
 
 
-def parsing_arguments():
+def get_price():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         'price',
         type=float,
         help='Напишите цену товара'
     )
-    return parser.parse_args()
-
-
-def convert_price_float(unfloat_data):
-    if type(unfloat_data) == str and unfloat_data.find(','):
-        unfloat_data = unfloat_data.replace(',', '.')
-
-    try:
-        float_number = float(unfloat_data)
-        return float_number
-    except (ValueError, TypeError):
-        return None
+    return parser.parse_args().price
 
 
 def format_price(price):
+    if type(price) == bool:
+        return None
     if type(price) != float:
-        price = convert_price_float(price)
-        if not price:
+        try:
+            price = float(price)
+        except (ValueError, TypeError):
             return None
-    price_int_path = str(int(price))
-    price_path = []
 
-    while price_int_path:
-        price_path.append(price_int_path[-3:])
-        price_int_path = price_int_path[:-3]
+    if price.is_integer():
+        price_format_str = '{:_.0f}'.format(price)
+    else:
+        price_format_str = '{:_.2f}'.format(price)
 
-    price_path.reverse()
-    if not price.is_integer():
-        price = str(price)
-        fraction = price[price.find('.'):]
-        price_path[-1] += fraction
-    return ' '.join(price_path)
+    price_show = price_format_str.replace('_', ' ')
+    return price_show
 
 
 if __name__ == '__main__':
-    price_str = parsing_arguments().price
+    price_str = get_price()
     print(format_price(price_str))
