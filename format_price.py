@@ -8,7 +8,7 @@ def get_price():
         type=float,
         help='Напишите цену товара'
     )
-    return parser.parse_args().price
+    return parser.parse_args()
 
 
 def format_price(price):
@@ -25,10 +25,14 @@ def format_price(price):
     else:
         price_format_str = '{:_.2f}'.format(price)
 
-    price_show = price_format_str.replace('_', ' ')
-    return price_show
+    pretty_price = price_format_str.replace('_', ' ')
+    return pretty_price
 
 
 if __name__ == '__main__':
-    price_str = get_price()
-    print(format_price(price_str))
+    price_str = get_price().price
+    formatted_price = format_price(price_str)
+    if formatted_price:
+        print(formatted_price)
+    else:
+        print('Цена указанна не верно')
