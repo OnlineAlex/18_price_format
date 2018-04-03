@@ -14,11 +14,10 @@ def get_price():
 def format_price(price):
     if type(price) == bool:
         return None
-    if type(price) != float:
-        try:
-            price = float(price)
-        except (ValueError, TypeError):
-            return None
+    try:
+        price = float(price)
+    except (ValueError, TypeError):
+        return None
 
     if price.is_integer():
         price_format_str = '{:_.0f}'.format(price)
